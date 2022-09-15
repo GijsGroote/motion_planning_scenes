@@ -24,7 +24,6 @@ class MotionPlanningComponent(ABC):
         self._config = OmegaConf.create(self._content_dict)
         config = OmegaConf.create(self._content_dict)
         self._config = OmegaConf.merge(schema, config)
-        self._required_keys = []
 
     def name(self):
         return self._name
