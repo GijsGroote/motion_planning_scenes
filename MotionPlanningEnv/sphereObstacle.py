@@ -9,7 +9,7 @@ from MotionPlanningSceneHelpers.motionPlanningComponent import (
 )
 
 from omegaconf import OmegaConf
-from typing import List, Optional
+from typing import Optional
 
 class SphereObstacleMissmatchDimensionError(Exception):
     pass
