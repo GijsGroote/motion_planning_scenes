@@ -1,8 +1,0 @@
-name: simpleUrdf
-type: sphere
-position:
-  - 0.1
-  - 0.2
-  - 0.4
-geometry: 
-  urdf: sphere_015.urdf

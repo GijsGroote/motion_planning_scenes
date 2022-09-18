@@ -5,9 +5,9 @@ import sys
 
 import pybullet as p
 import pybullet_data
-from MotionPlanningEnv.sphereObstacle import SphereObstacle
-from MotionPlanningEnv.urdfObstacle import UrdfObstacle
-from MotionPlanningEnv.dynamicSphereObstacle import DynamicSphereObstacle
+from motion_planning_env.sphere_obstacle import SphereObstacle
+from motion_planning_env.urdf_obstacle import UrdfObstacle
+from motion_planning_env.dynamic_sphere_obstacle import DynamicSphereObstacle
 
 no_gui = True
 
@@ -29,48 +29,48 @@ def bullet_gui():
     #p.setAdditionalSearchPath(os.path.dirname(__file__) + "/models")
     return p
 
-def test_sphereObstacle(bullet):
-    obstDict = {'type': 'sphere', 'position': [0.1, 0.2, 0.4], 'geometry': {'radius': 0.2}}
-    sphereObst = SphereObstacle(name='simpleSphere', content_dict=obstDict)
-    sphereObst.add_to_bullet(bullet)
+def test_sphere_obstacle(bullet):
+    obst_dict = {"type": "sphere", "position": [0.1, 0.2, 0.4], "geometry": {"radius": 0.2}}
+    sphere_obst = SphereObstacle(name="simpleSphere", content_dict=obst_dict)
+    sphere_obst.add_to_bullet(bullet)
     for i in range(100):
         bullet.stepSimulation()
-        sphereObst.update_bullet_position(bullet, t=i/10)
+        sphere_obst.update_bullet_position(bullet, t=i/10)
     bullet.disconnect()
 
 @pytest.mark.skipif(no_gui, reason="Not testing because gui is not available")
-def test_sphereObstacle_gui(bullet_gui):
-    obstDict = {'type': 'sphere', 'position': [0.1, 0.2, 0.4], 'geometry': {'radius': 0.2}}
-    sphereObst = SphereObstacle(name='simpleSphere', content_dict=obstDict)
-    sphereObst.add_to_bullet(bullet_gui)
+def test_sphere_obstacle_gui(bullet_gui):
+    obst_dict = {"type": "sphere", "position": [0.1, 0.2, 0.4], "geometry": {"radius": 0.2}}
+    sphere_obst = SphereObstacle(name="simpleSphere", content_dict=obst_dict)
+    sphere_obst.add_to_bullet(bullet_gui)
     for i in range(100):
         bullet_gui.stepSimulation()
-        sphereObst.update_bullet_position(bullet_gui, t=i/10)
+        sphere_obst.update_bullet_position(bullet_gui, t=i/10)
         time.sleep(1/100)
     bullet_gui.disconnect()
 
-def test_urdfObstacle(bullet):
-    obstDict = {
+def test_urdf_obstacle(bullet):
+    obst_dict = {
         "type": "sphere",
         "position": [0.1, 0.2, 0.4],
         "geometry": {"urdf": "teddy_large.urdf"},
     }
-    sphereObst = UrdfObstacle(name="simpleUrdf", content_dict=obstDict)
-    sphereObst.add_to_bullet(bullet)
+    sphere_obst = UrdfObstacle(name="simpleUrdf", content_dict=obst_dict)
+    sphere_obst.add_to_bullet(bullet)
     for i in range(100):
         bullet.stepSimulation()
-        sphereObst.update_bullet_position(bullet, t=i/10)
+        sphere_obst.update_bullet_position(bullet, t=i/10)
         time.sleep(1/100)
     bullet.disconnect()
 
 @pytest.mark.skipif(no_gui, reason="Not testing because gui is not available")
 def test_urdfObstacle_gui(bullet_gui):
-    obstDict = {
+    obst_dict = {
         "type": "sphere",
         "position": [0.1, 0.2, 0.4],
         "geometry": {"urdf": "teddy_large.urdf"},
     }
-    sphereObst = UrdfObstacle(name="simpleUrdf", content_dict=obstDict)
+    sphereObst = UrdfObstacle(name="simpleUrdf", content_dict=obst_dict)
     sphereObst.add_to_bullet(bullet_gui)
     for i in range(100):
         bullet_gui.stepSimulation()
@@ -80,12 +80,12 @@ def test_urdfObstacle_gui(bullet_gui):
 
 @pytest.mark.skipif(no_gui, reason="Not testing because gui is not available")
 def test_circleObstacle_gui(bullet_gui):
-    obstDict = {
+    obst_dict = {
         "type": "sphere",
         "geometry": {"trajectory": ["0.1 * t", "0.2 * t"], "radius": 0.2},
     }
     dynamicSphereObst = DynamicSphereObstacle(
-        name="dynamicSphere", content_dict=obstDict
+        name="dynamicSphere", content_dict=obst_dict
     )
     dynamicSphereObst.add_to_bullet(bullet_gui)
     for i in range(100):
@@ -95,12 +95,12 @@ def test_circleObstacle_gui(bullet_gui):
     bullet_gui.disconnect()
 
 def test_circleObstacle(bullet):
-    obstDict = {
+    obst_dict = {
         "type": "sphere",
         "geometry": {"trajectory": ["0.1 * t", "0.2 * t"], "radius": 0.2},
     }
     dynamicSphereObst = DynamicSphereObstacle(
-        name="dynamicSphere", content_dict=obstDict
+        name="dynamicSphere", content_dict=obst_dict
     )
     dynamicSphereObst.add_to_bullet(bullet)
     for i in range(100):
@@ -110,13 +110,13 @@ def test_circleObstacle(bullet):
     bullet.disconnect()
 
 def test_splineObstacle(bullet):
-    splineDict = {'degree': 2, 'controlPoints': [[1.0, 0.0], [2.0, 0.0],[2.0, 1.0]], 'duration': 10}
-    obstDict = {
+    splineDict = {"degree": 2, "controlPoints": [[1.0, 0.0], [2.0, 0.0],[2.0, 1.0]], "duration": 10}
+    obst_dict = {
         "type": "splineSphere",
         "geometry": {"trajectory": splineDict, "radius": 0.2},
     }
     dynamicSphereObst = DynamicSphereObstacle(
-        name="dynamicSphere", content_dict=obstDict
+        name="dynamicSphere", content_dict=obst_dict
     )
     dynamicSphereObst.add_to_bullet(bullet)
     for i in range(100):
@@ -127,17 +127,17 @@ def test_splineObstacle(bullet):
 
 @pytest.mark.skipif(no_gui, reason="Not testing because gui is not available")
 def test_splineObstacle_gui(bullet_gui):
-    splineDict = {'degree': 2, 'controlPoints': [[1.0, 0.0], [2.0, 0.0],[2.0, 1.0]], 'duration': 10}
-    obstDict = {
+    spline_dict = {"degree": 2, "controlPoints": [[1.0, 0.0], [2.0, 0.0],[2.0, 1.0]], "duration": 10}
+    obst_dict = {
         "type": "splineSphere",
-        "geometry": {"trajectory": splineDict, "radius": 0.2},
+        "geometry": {"trajectory": spline_dict, "radius": 0.2},
     }
-    dynamicSphereObst = DynamicSphereObstacle(
-        name="dynamicSphere", content_dict=obstDict
+    dynamic_sphere_obst = DynamicSphereObstacle(
+        name="dynamicSphere", content_dict=obst_dict
     )
-    dynamicSphereObst.add_to_bullet(bullet_gui)
+    dynamic_sphere_obst.add_to_bullet(bullet_gui)
     for i in range(100):
         bullet_gui.stepSimulation()
-        dynamicSphereObst.update_bullet_position(bullet_gui, t=i/10)
+        dynamic_sphere_obst.update_bullet_position(bullet_gui, t=i/10)
         time.sleep(1/100)
     bullet_gui.disconnect()
