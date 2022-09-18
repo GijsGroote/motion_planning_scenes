@@ -2,11 +2,11 @@
 name = "motion_planning_scenes"
 version = "0.1.0"
 description = "Generic motion planning scenes, including goals and obstacles."
-authors = ["Gijs Groote <gijsgroote@hotmail.com>"]
+authors = ["Gijs Groote <gijsgroote@hotmail.com>", "Max Spahn <m.spahn@tudelft.nl>"]
 packages = [
-  { include = "MotionPlanningSceneHelpers" },
-  { include = "MotionPlanningGoal" },
-  { include = "MotionPlanningEnv" },
+  { include = "motion_planning_scene_helpers" },
+  { include = "motion_planning_goal" },
+  { include = "motion_planning_env" },
 ]
   
 [tool.poetry.dependencies]
