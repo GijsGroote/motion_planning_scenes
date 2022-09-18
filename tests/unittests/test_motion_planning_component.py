@@ -1,3 +1,4 @@
+import pytest
 from motion_planning_scene_helpers.motion_planning_component import MotionPlanningComponent
 from omegaconf import OmegaConf
 from dataclasses import dataclass

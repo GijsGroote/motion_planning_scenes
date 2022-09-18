@@ -1,79 +1,86 @@
-import pytest
-
 from motion_planning_goal.static_joint_space_subgoal import StaticJointSpaceSubgoal
 from motion_planning_goal.subgoal import SubgoalMissmatchDimensionError
-from motion_planning_scene_helpers.motion_planning_component import ComponentIncompleteError
-
+import pytest
 from omegaconf.errors import MissingMandatoryValue
 
 @pytest.fixture
-def simpleGoalDict():
-    goalDict = {
+def simple_goal_dict():
+    goal_dict = {
         "weight": 5.0,
         "is_primary_goal": True,
         "desired_position": [0.01, 0.2, 0.5],
         "epsilon": 0.2,
-        "type": "staticJointSpaceSubgoal",
-        "indices": [0, 1, 2], 
+        "type": "static_joint_space_subgoal",
+        "indices": [0, 1, 2],
     }
-    return goalDict
+    return goal_dict
 
+def test_static_subgoal(simple_goal_dict):
+    simple_static_subgoal = StaticJointSpaceSubgoal(
+            name="simple_static_subgoal",
+            content_dict=simple_goal_dict)
+    assert "simple_static_subgoal" == simple_static_subgoal.name()
+    assert [0.01, 0.2, 0.5] == simple_static_subgoal.position()
+    assert 0.2 == simple_static_subgoal.epsilon()
+    assert "static_joint_space_subgoal" == simple_static_subgoal.type()
 
-def test_staticSubgoal(simpleGoalDict):
-    simpleStaticSubgoal = StaticJointSpaceSubgoal(name="simple_static_subGoal", content_dict=simpleGoalDict)
-    assert "simple_static_subGoal" == simpleStaticSubgoal.name()
-    assert [0.01, 0.2, 0.5] == simpleStaticSubgoal.position()
-    assert 0.2 == simpleStaticSubgoal.epsilon()
-    assert "staticJointSpaceSubgoal" == simpleStaticSubgoal.type()
-
-def test_shuffleGoal(simpleGoalDict):
-    simpleStaticSubgoal = StaticJointSpaceSubgoal(name="simple_static_subGoal", content_dict=simpleGoalDict)
-    simpleStaticSubgoal.shuffle()
-    assert [0.01, 0.2, 0.5] != simpleStaticSubgoal.position()
-    assert simpleStaticSubgoal.position()[0] >= -1
-    assert simpleStaticSubgoal.position()[0] <= 1
-    assert simpleStaticSubgoal.position()[1] >= -1
-    assert simpleStaticSubgoal.position()[1] <= 1
+def test_shuffle_goal(simple_goal_dict):
+    simple_static_subgoal = StaticJointSpaceSubgoal(
+            name="simple_static_subgoal",
+            content_dict=simple_goal_dict)
+    simple_static_subgoal.shuffle()
+    assert [0.01, 0.2, 0.5] != simple_static_subgoal.position()
+    assert simple_static_subgoal.position()[0] >= -1
+    assert simple_static_subgoal.position()[0] <= 1
+    assert simple_static_subgoal.position()[1] >= -1
+    assert simple_static_subgoal.position()[1] <= 1
     # add limits to goalDict
-    simpleGoalDict['low'] = [-2, -2, -2]
-    simpleGoalDict['high'] = [-1, -1, 0]
-    simpleStaticSubgoal = StaticJointSpaceSubgoal(name="simple_static_subGoal", content_dict=simpleGoalDict)
-    simpleStaticSubgoal.shuffle()
-    assert [0.01, 0.2, 0.5] != simpleStaticSubgoal.position()
-    assert simpleStaticSubgoal.position()[0] >= -2
-    assert simpleStaticSubgoal.position()[0] <= -1
-    assert simpleStaticSubgoal.position()[1] >= -2
-    assert simpleStaticSubgoal.position()[1] <= -1
-    assert simpleStaticSubgoal.position()[2] >= -2
-    assert simpleStaticSubgoal.position()[2] <= 0
+    simple_goal_dict["low"] = [-2, -2, -2]
+    simple_goal_dict["high"] = [-1, -1, 0]
+    simple_static_subgoal = StaticJointSpaceSubgoal(
+            name="simple_static_subgoal",
+            content_dict=simple_goal_dict)
+    simple_static_subgoal.shuffle()
+    assert [0.01, 0.2, 0.5] != simple_static_subgoal.position()
+    assert simple_static_subgoal.position()[0] >= -2
+    assert simple_static_subgoal.position()[0] <= -1
+    assert simple_static_subgoal.position()[1] >= -2
+    assert simple_static_subgoal.position()[1] <= -1
+    assert simple_static_subgoal.position()[2] >= -2
+    assert simple_static_subgoal.position()[2] <= 0
 
-def test_saving_sub_goal(simpleGoalDict):
-    simpleStaticSubgoal = StaticJointSpaceSubgoal(name="simple_static_subGoal", content_dict=simpleGoalDict)
-    simpleStaticSubgoal.shuffle()
-    goal_dict_after =simpleStaticSubgoal.dict()
+def test_saving_sub_goal(simple_goal_dict):
+    simple_static_subgoal = StaticJointSpaceSubgoal(
+            name="simple_static_subgoal",
+            content_dict=simple_goal_dict)
+    simple_static_subgoal.shuffle()
+    goal_dict_after =simple_static_subgoal.dict()
     assert isinstance(goal_dict_after, dict)
-    assert goal_dict_after['desired_position'][0] != 0.01
+    assert goal_dict_after["desired_position"][0] != 0.01
 
 
-def test_errorRaiseIncompleteDict():
-    goalDict = {
+def test_error_raise_incomplete_dict():
+    goal_dict = {
         "is_primary_goal": True,
         "indices": [0, 1],
         "desired_position": [0.01, 0.2],
     }
     with pytest.raises(MissingMandatoryValue) as e_info:
-        static_sub_goal = StaticJointSpaceSubgoal(name="example_static_subGoal", content_dict=goalDict)
-        weight = static_sub_goal.weight()
+        static_sub_goal = StaticJointSpaceSubgoal(
+                name="example_static_subgoal",
+                content_dict=goal_dict)
+        static_sub_goal.weight()
 
 
-def test_errorRaiseMissmatichDimension():
-    goalDict = {
+def test_error_raise_missmatich_dimension():
+    goal_dict = {
         "weight": 5.0,
         "is_primary_goal": True,
         "epsilon": 0.2,
         "indices": [0],
         "desired_position": [0.01, 0.2],
-        "type": "staticJointSpaceSubgoal",
+        "type": "static_joint_space_subgoal",
     }
     with pytest.raises(SubgoalMissmatchDimensionError) as e_info:
-        StaticJointSpaceSubgoal(name="example_static_subGoal", content_dict=goalDict)
+        StaticJointSpaceSubgoal(name="example_static_subgoal",
+                content_dict=goal_dict)

@@ -1,12 +1,4 @@
-import pytest
-
-import numpy as np
-
 from motion_planning_env.free_collision_obstacle import FreeCollisionObstacle
-from motion_planning_scene_helpers.motion_planning_component import(
-        ComponentIncompleteError
-        )
-
 from omegaconf import OmegaConf
 
 def test_free_collision_obstacle():

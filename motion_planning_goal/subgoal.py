@@ -29,7 +29,6 @@ class SubgoalConfig:
     epsilon: float: Required accuracy of the sub goal
     prime: bool: Flag for primary goal
     """
-
     weight: float
     type: str
     indices: List[int]

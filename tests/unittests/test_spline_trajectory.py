@@ -8,14 +8,16 @@ from motion_planning_scene_helpers.spline_trajectory import (
 
 
 @pytest.fixture
-def simpleSplineTrajectory():
-    traj = SplineTrajectory(2, traj = {'degree': 2, 'controlPoints': [[1.0, 0.0], [2.0, 0.0],[2.0, 1.0]], 'duration': 10})
+def simple_spline_trajectory():
+    traj = SplineTrajectory(2, traj = {"degree": 2,
+        "controlPoints": [[1.0, 0.0], [2.0, 0.0],[2.0, 1.0]],
+        "duration": 10})
     traj.concretize()
     return traj
 
 
-def test_analyticTrajectory(simpleSplineTrajectory):
-    x, v, a = simpleSplineTrajectory.evaluate(0.3)
+def test_analytic_trajectory(simple_spline_trajectory):
+    x, v, a = simple_spline_trajectory.evaluate(0.3)
     assert isinstance(x, np.ndarray)
     assert isinstance(v, np.ndarray)
     assert isinstance(a, np.ndarray)
@@ -29,6 +31,6 @@ def test_analyticTrajectory(simpleSplineTrajectory):
     assert a_norm == pytest.approx(a_norm_verification)
 
 
-def test_raiseComponentMissingError():
+def test_raise_component_missing_error():
     with pytest.raises(TrajectoryComponentMissingError):
         SplineTrajectory(3)

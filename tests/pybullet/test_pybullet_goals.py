@@ -61,32 +61,34 @@ def dynamic_spline_goal_dict():
         "indices": [0, 1],
         "parent_link": 0,
         "child_link": 3,
-        "trajectory": {'degree': 2, 'controlPoints': [[0.1, 0.0], [1.0, 1.0], [1.0, 2.0]], 'duration': 10},
+        "trajectory": {"degree": 2,
+            "controlPoints": [[0.1, 0.0], [1.0, 1.0], [1.0, 2.0]],
+            "duration": 10},
         "epsilon": 0.2,
         "type": "spline_subgoal",
     }
-    return goal_dict 
-
+    return goal_dict
 
 @pytest.fixture
 def bullet():
-    physicsClient = p.connect(p.DIRECT)#or p.DIRECT for non-graphical version
+    p.connect(p.DIRECT)#or p.DIRECT for non-graphical version
     p.setAdditionalSearchPath(pybullet_data.getDataPath()) #used by loadURDF
     p.setGravity(0,0,-10)
-    planeId = p.loadURDF("plane.urdf")
+    p.loadURDF("plane.urdf")
     return p
 
 @pytest.fixture
 def bullet_gui():
-    physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
+    p.connect(p.GUI)#or p.DIRECT for non-graphical version
     p.setAdditionalSearchPath(pybullet_data.getDataPath()) #used by loadURDF
     p.setGravity(0,0,-10)
-    planeId = p.loadURDF("plane.urdf")
+    p.loadURDF("plane.urdf")
     return p
 
 @pytest.mark.skipif(no_gui, reason="Not testing because gui is not available")
 def test_add_static_subgoal_gui(simple_goal_dict, bullet_gui):
-    static_subgoal = StaticSubgoal(name="simple_static_subgoal", content_dict=simple_goal_dict)
+    static_subgoal = StaticSubgoal(name="simple_static_subgoal",
+            content_dict=simple_goal_dict)
     static_subgoal.add_to_bullet(bullet_gui)
     for _ in range(10):
         bullet_gui.stepSimulation()
@@ -94,14 +96,16 @@ def test_add_static_subgoal_gui(simple_goal_dict, bullet_gui):
     bullet_gui.disconnect()
 
 def test_add_static_subgoal(simple_goal_dict, bullet):
-    static_subgoal = StaticSubgoal(name="simple_static_subgoal", content_dict=simple_goal_dict)
+    static_subgoal = StaticSubgoal(name="simple_static_subgoal",
+            content_dict=simple_goal_dict)
     static_subgoal.add_to_bullet(bullet)
     for _ in range(10):
         bullet.stepSimulation()
     bullet.disconnect()
 
 def test_add_joint_space_goal(simple_joint_space_goal_dict, bullet):
-    static_subgoal = StaticJointSpaceSubgoal(name="simple_static_subgoal", content_dict=simple_joint_space_goal_dict)
+    static_subgoal = StaticJointSpaceSubgoal(name="simple_static_subgoal",
+            content_dict=simple_joint_space_goal_dict)
     with pytest.raises(JointSpaceGoalsNotSupportedError):
         static_subgoal.add_to_bullet(bullet)
         for _ in range(10):
@@ -110,7 +114,8 @@ def test_add_joint_space_goal(simple_joint_space_goal_dict, bullet):
 
 
 def test_dynamic_subgoal(dynamic_goal_dict, bullet):
-    dynamic_subgoal = DynamicSubgoal(name="simple_dynamic_subgoal", content_dict=dynamic_goal_dict)
+    dynamic_subgoal = DynamicSubgoal(name="simple_dynamic_subgoal",
+            content_dict=dynamic_goal_dict)
     dynamic_subgoal.add_to_bullet(bullet)
     for i in range(10):
         bullet.stepSimulation()
@@ -119,8 +124,9 @@ def test_dynamic_subgoal(dynamic_goal_dict, bullet):
     bullet.disconnect()
 
 @pytest.mark.skipif(no_gui, reason="Not testing because gui is not available")
-def test_dynamicSubgoal_gui(dynamic_goal_dict, bullet_gui):
-    dynamic_subgoal = DynamicSubgoal(name="simple_dynamic_subgoal", content_dict=dynamic_goal_dict)
+def test_dynamic_subgoal_gui(dynamic_goal_dict, bullet_gui):
+    dynamic_subgoal = DynamicSubgoal(name="simple_dynamic_subgoal",
+            content_dict=dynamic_goal_dict)
     dynamic_subgoal.add_to_bullet(bullet_gui)
     for i in range(100):
         bullet_gui.stepSimulation()
@@ -128,8 +134,9 @@ def test_dynamicSubgoal_gui(dynamic_goal_dict, bullet_gui):
         time.sleep(1/100)
     bullet_gui.disconnect()
 
-def test_dynamicSplineSubgoal(dynamic_spline_goal_dict, bullet):
-    dynamic_subgoal = DynamicSubgoal(name="simple_dynamic_subGoal", content_dict=dynamic_spline_goal_dict)
+def test_dynamic_spline_subgoal(dynamic_spline_goal_dict, bullet):
+    dynamic_subgoal = DynamicSubgoal(name="simple_dynamic_subGoal",
+            content_dict=dynamic_spline_goal_dict)
     dynamic_subgoal.add_to_bullet(bullet)
     for i in range(10):
         bullet.stepSimulation()

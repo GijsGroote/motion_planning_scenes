@@ -64,19 +64,19 @@ def test_goal_composition_multi(multi_goal_dict):
     assert len(subgoals) == 2
 
 
-def test_shuffleGoalComposition(multi_goal_dict):
+def test_shuffle_goal_composition(multi_goal_dict):
     goal_composition = GoalComposition(
         name="example_static_subgoal", content_dict=multi_goal_dict
     )
     # verification that returns are actually only pointers
-    subgoal_1 = goal_composition.get_goal_by_name('subgoal1')
+    subgoal_1 = goal_composition.get_goal_by_name("subgoal1")
     assert subgoal_1.position() == [-0.21, 0.2]
     goal_composition.shuffle()
-    assert goal_composition.get_goal_by_name('subgoal1').position() != [-0.21, 0.2]
+    assert goal_composition.get_goal_by_name(
+            "subgoal1").position() != [-0.21, 0.2]
     assert subgoal_1.position() != [-0.21, 0.2]
 
-
-def test_errorMultiplePrimeGoals():
+def test_error_multiple_prime_goals():
     goal_dict = {
         "subgoal0": {
             "weight": 5.0,

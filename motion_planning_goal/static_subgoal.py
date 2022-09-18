@@ -92,7 +92,7 @@ class StaticSubgoal(Subgoal):
         if self._config.angle:
             return list(self._config.angle)
 
-    def render_gym(self, viewer, rendering, **kwargs):
+    def render_gym(self, viewer, rendering):
         """Rendering the static sub goal into a planar gym environment.
 
         The static sub goal is rendered into the viewer of the open-ai gym by

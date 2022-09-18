@@ -17,6 +17,7 @@ class MultiplePrimeGoalsError(Exception):
 
 class GoalComposition(MotionPlanningComponent):
     def __init__(self, **kwargs):
+        # Should here not be super.__init__(self, kwargs)?? 
         if "content_dict" in kwargs and "name" in kwargs:
             self._content_dict = kwargs.get("content_dict")
             self._name = kwargs.get("name")
@@ -61,10 +62,10 @@ class GoalComposition(MotionPlanningComponent):
     def get_goal_by_index(self, index):
         return self._subgoals[index]
 
-    def evaluate(self, **kwargs):
+    def evaluate(self):
         evals = []
         for subgoal in self._subgoals:
-            evals += subgoal.evaluate(**kwargs)
+            evals += subgoal.evaluate()
         return evals
 
     def dict(self):
@@ -77,10 +78,10 @@ class GoalComposition(MotionPlanningComponent):
         for subgoal in self._subgoals:
             subgoal.shuffle()
 
-    def render_gym(self, viewer, rendering, **kwargs):
+    def render_gym(self, viewer, rendering):
         for subgoal in self._subgoals:
             try:
-                subgoal.render_gym(viewer, rendering, **kwargs)
+                subgoal.render_gym(viewer, rendering)
             except JointSpaceGoalsNotSupportedError as _:
                 print("Skipping visualization of joint space goal.")
 
