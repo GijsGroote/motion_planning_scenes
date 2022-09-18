@@ -1,4 +1,5 @@
 from motion_planning_env.free_collision_obstacle import FreeCollisionObstacle
+import pytest
 from omegaconf import OmegaConf
 
 def test_free_collision_obstacle():
@@ -38,4 +39,5 @@ def test_r_euler_angles():
             0.42073549240394825,
             0.42073549240394825,
             0.7701511529340699]
-    assert answer == free_col_obst.orientation()
+
+    assert answer == pytest.approx(free_col_obst.orientation())
