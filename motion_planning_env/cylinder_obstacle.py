@@ -67,7 +67,7 @@ class CylinderObstacle(FreeCollisionObstacle):
             pybullet.GEOM_MESH,
             fileName="cylinder.obj",
             rgbaColor=self.color(),
-            meshScale=[self.radius(), self.radius(), self.height()]
+            meshScale=[self.radius(), self.radius(), self.height()/2]
         )
 
         if self.dimension() == 3:

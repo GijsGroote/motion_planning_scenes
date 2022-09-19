@@ -121,7 +121,7 @@ class SphereObstacle(FreeCollisionObstacle):
         )
         visual_shape_id = pybullet.createVisualShape(
             pybullet.GEOM_MESH,
-            fileName="sphere_smooth.obj",
+            fileName="sphere.obj",
             rgbaColor=self.color(),
             specularColor=[1.0, 0.5, 0.5],
             meshScale=[self.radius(), self.radius(), self.radius()],
