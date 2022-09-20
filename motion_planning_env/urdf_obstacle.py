@@ -33,12 +33,17 @@ class UrdfObstacleConfig(FreeCollisionObstacleConfig):
     """
     geometry: GeometryConfig
     _: KW_ONLY
-    scaling: float
+    scaling: float = 1
 
 class UrdfObstacle(FreeCollisionObstacle):
     def __init__(self, **kwargs):
         schema = OmegaConf.structured(UrdfObstacleConfig)
         super().__init__(schema, **kwargs)
+
+        # set default orienation
+        if len(self.orientation()) == 0:
+            self._config.orientation = [0,0,0,1]
+
 
     def urdf(self):
         return self._config.geometry.urdf
