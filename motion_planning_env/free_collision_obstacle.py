@@ -18,7 +18,8 @@ class FreeCollisionObstacleConfig(CollisionObstacleConfig):
         [yaw, pitch, roll] euler angles are converted to quaternion orientation
     movable : bool : Flag indicating whether an obstacle is movable
     mass: float : mass of the object, only used if movable set to true
-    color : List : [r,g,b,a] where r,g,b and a are floats between 0 and 1
+    color : List : Allowed color format, [r,g,b] or [r,g,b,a]
+        r,g,b between 0 and 1, or 0 and 255, a between 0 and 1
     """
     position: List[float]
     _: KW_ONLY
@@ -71,18 +72,25 @@ class FreeCollisionObstacle(CollisionObstacle):
 
     def check_color(self):
         if "color" in self._content_dict:
-            if len(self._content_dict["color"]) != 4:
+            if (len(self._content_dict["color"]) != 4 and
+                len(self._content_dict["color"]) != 3):
                 raise ValueError(f"""
                         incorrect color shape: {len(
-                        self._content_dict["color"])}, which should be (4,)
+                        self._content_dict["color"])}, which should be (4,) or (3,)
                         """)
+            if (self._content_dict["color"][0] > 1 or
+                self._content_dict["color"][1] > 1 or
+                self._content_dict["color"][2] > 1):
+                # convert to 0-1 scale
+
+                self._config.color[0:3] = [val/255 for
+                        val in self._content_dict["color"][0:3]]
 
     def check_mass(self):
         if "mass" in self._content_dict:
             if self._content_dict["mass"] <= 0:
                 raise ValueError(f"""
-                        negative mass: 
-                        {self._content_dict["mass"]}, which should positive
+                        negative mass: {self._content_dict["mass"]}, which should positive
                         """)
 
     def orientation(self):

@@ -59,13 +59,13 @@ class BoxObstacle(FreeCollisionObstacle):
                 os.path.dirname(os.path.realpath(__file__)))
 
         collision_shape = pybullet.createCollisionShape(pybullet.GEOM_BOX,
-                halfExtents=[self.length(), self.width(), self.height()])
+                halfExtents=[self.length()/2, self.width()/2, self.height()/2])
 
         visual_shape_id = pybullet.createVisualShape(
             pybullet.GEOM_MESH,
             fileName="box.obj",
             rgbaColor=self.color(),
-            meshScale=[self.length(), self.width(), self.height()]
+            meshScale=[self.length()/2, self.width()/2, self.height()/2]
         )
 
         if self.dimension() == 3:
