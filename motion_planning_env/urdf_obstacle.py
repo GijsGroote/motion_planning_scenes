@@ -4,10 +4,8 @@ from motion_planning_scene_helpers.motion_planning_component import (
     DimensionNotSuitableForEnv
 )
 
-from dataclasses import dataclass
+from dataclasses import dataclass, KW_ONLY
 from omegaconf import OmegaConf
-from typing import Optional
-
 
 @dataclass
 class GeometryConfig:
@@ -25,23 +23,17 @@ class GeometryConfig:
 @dataclass
 class UrdfObstacleConfig(FreeCollisionObstacleConfig):
     """
-    Configuration dataclass for sphere obstacle.
-
-    This configuration class holds information about the
-    and randomization of the obstacle.
+    Configuration dataclass for urdf obstacle.
 
     Parameters:
     ------------
 
     geometry : GeometryConfig : Geometry of the obstacle
-    low: GeometryConfig : Lower limit for randomization
-    high: GeometryConfig : Upper limit for randomization
-
+    scaling: float : Scaling factor of obstacle
     """
     geometry: GeometryConfig
-    low: Optional[GeometryConfig] = None
-    high: Optional[GeometryConfig] = None
-
+    _: KW_ONLY
+    scaling: float
 
 class UrdfObstacle(FreeCollisionObstacle):
     def __init__(self, **kwargs):
@@ -51,9 +43,17 @@ class UrdfObstacle(FreeCollisionObstacle):
     def urdf(self):
         return self._config.geometry.urdf
 
+    def scaling(self):
+        return self._config.scaling
+
     def add_to_bullet(self, pybullet):
         if self.dimension() != 3:
             raise DimensionNotSuitableForEnv(
                 "Pybullet only supports two dimensional obstacles"
             )
-        pybullet.loadURDF(fileName=self.urdf(), basePosition=self.position())
+        pybullet.loadURDF(
+                fileName=self.urdf(),
+                basePosition=self.position(),
+                baseOrientation=self.orientation(),
+                globalScaling=self.scaling()
+                )
