@@ -72,19 +72,24 @@ class FreeCollisionObstacle(CollisionObstacle):
 
     def check_color(self):
         if "color" in self._content_dict:
-            if (len(self._content_dict["color"]) != 4 and
-                len(self._content_dict["color"]) != 3):
+
+            if len(self.color()) == 3:
+                self.color().append(1)
+
+            if len(self.color()) != 4:
                 raise ValueError(f"""
                         incorrect color shape: {len(
-                        self._content_dict["color"])}, which should be (4,) or (3,)
+                        self.color())}, which should be (4,) or (3,)
                         """)
-            if (self._content_dict["color"][0] > 1 or
-                self._content_dict["color"][1] > 1 or
-                self._content_dict["color"][2] > 1):
-                # convert to 0-1 scale
 
+            rgb = self.color()[0:3]
+            if (rgb[0] > 1 or
+                rgb[1] > 1 or
+                rgb[2] > 1):
+
+                # convert to 0-1 scale
                 self._config.color[0:3] = [val/255 for
-                        val in self._content_dict["color"][0:3]]
+                        val in rgb]
 
     def check_mass(self):
         if "mass" in self._content_dict:

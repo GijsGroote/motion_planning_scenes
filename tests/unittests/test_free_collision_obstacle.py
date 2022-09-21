@@ -44,34 +44,23 @@ def test_r_euler_angles():
     assert answer == pytest.approx(free_col_obst.orientation())
 
 def test_color_rgb_to_rgba():
-    obst_dict = {"type": "free_col_obstacle",
-            "position": [0.1, 0.2],
-            "orientation": [0, 0, 0, 1],
-            "movable": True,
-            "mass": 13,
-            "color": [255, 255, 255, 1],
-             }
 
-    schema = OmegaConf.structured({})
-    free_col_obst = FreeCollisionObstacle(schema,
-            name="free_col_obstacle_name",
-            content_dict=obst_dict)
-    assert [1, 1, 1, 1] == free_col_obst.color()
+    colors = [([1, 1, 1, 1], [255, 255, 255, 1]),
+            ([1/255, 100/255, 1, 1], [1, 100, 255, 1]),
+            ([1, 1, 1, 1], [255, 255, 255])]
+    colors = [([1, 1, 1, 1], [255, 255, 255])]
+    for (expected_answer, input_value) in colors:
+        print(f"the in put value!@ {input_value}")
+        obst_dict = {"type": "free_col_obstacle",
+                "position": [0.1, 0.2],
+                "color": input_value,
+                 }
 
-    obst_dict = {"type": "free_col_obstacle",
-            "position": [0.1, 0.2],
-            "orientation": [0, 0, 0, 1],
-            "movable": True,
-            "mass": 13,
-            "color": [1, 100, 255, 1],
-             }
-
-    schema = OmegaConf.structured({})
-    free_col_obst = FreeCollisionObstacle(schema,
-            name="free_col_obstacle_name",
-            content_dict=obst_dict)
-    assert [1/255, 100/255, 1, 1] == pytest.approx(free_col_obst.color())
-
+        schema = OmegaConf.structured({})
+        free_col_obst = FreeCollisionObstacle(schema,
+                name="free_col_obstacle_name",
+                content_dict=obst_dict)
+        assert expected_answer == pytest.approx(free_col_obst.color())
 
 
 def test_euler_to_quaternion():
