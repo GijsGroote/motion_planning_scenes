@@ -38,6 +38,7 @@ class FreeCollisionObstacle(CollisionObstacle):
         schema = OmegaConf.merge(FreeCollisionObstacleConfig, schema)
         super().__init__(schema, **kwargs)
         self.check_input()
+        self._bullet_id = None
 
     def check_input(self):
         self.check_orientation()
@@ -116,3 +117,8 @@ class FreeCollisionObstacle(CollisionObstacle):
     def dimension(self):
         return len(self.position())
 
+    def bullet_id(self):
+        return self._bullet_id
+
+    def add_to_bullet(self, pybullet) -> int:
+        pass

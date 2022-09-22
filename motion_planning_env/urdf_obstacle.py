@@ -51,14 +51,16 @@ class UrdfObstacle(FreeCollisionObstacle):
     def scaling(self):
         return self._config.scaling
 
-    def add_to_bullet(self, pybullet):
+    def add_to_bullet(self, pybullet) -> int:
         if self.dimension() != 3:
             raise DimensionNotSuitableForEnv(
                 "Pybullet only supports two dimensional obstacles"
             )
-        pybullet.loadURDF(
+        self._bullet_id = pybullet.loadURDF(
                 fileName=self.urdf(),
                 basePosition=self.position(),
                 baseOrientation=self.orientation(),
                 globalScaling=self.scaling()
                 )
+
+        return self.bullet_id()

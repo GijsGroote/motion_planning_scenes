@@ -47,7 +47,7 @@ class CylinderObstacle(FreeCollisionObstacle):
     def height(self):
         return self._config.geometry.height
 
-    def add_to_bullet(self, pybullet):
+    def add_to_bullet(self, pybullet) -> int:
         """
         Adds object to pybullet environment.
         """
@@ -78,10 +78,12 @@ class CylinderObstacle(FreeCollisionObstacle):
 
         base_orientation = self.orientation()
 
-        pybullet.createMultiBody(
+        self._bullet_id = pybullet.createMultiBody(
               mass,
               collision_shape,
               visual_shape_id,
               base_position,
               base_orientation
               )
+
+        return self.bullet_id()

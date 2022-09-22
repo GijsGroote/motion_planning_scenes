@@ -107,7 +107,7 @@ class SphereObstacle(FreeCollisionObstacle):
         joint = viewer.draw_circle(self.radius())
         joint.add_attr(tf)
 
-    def add_to_bullet(self, pybullet):
+    def add_to_bullet(self, pybullet) -> int:
         pybullet.setAdditionalSearchPath(
             os.path.dirname(os.path.realpath(__file__))
         )
@@ -136,10 +136,12 @@ class SphereObstacle(FreeCollisionObstacle):
             )
         base_orientation = self.orientation()
 
-        pybullet.createMultiBody(
+        self._bullet_id = pybullet.createMultiBody(
             mass,
             collision_shape,
             visual_shape_id,
             base_position,
             base_orientation,
         )
+
+        return self.bullet_id()

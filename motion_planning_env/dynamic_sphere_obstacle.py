@@ -175,7 +175,7 @@ class DynamicSphereObstacle(CollisionObstacle):
         joint = viewer.draw_circle(self.radius())
         joint.add_attr(tf)
 
-    def add_to_bullet(self, pybullet):
+    def add_to_bullet(self, pybullet) -> int:
         if self.dimension() == 2:
             base_position= self.position() + [0.0]
         elif self.dimension() == 3:
@@ -210,6 +210,8 @@ class DynamicSphereObstacle(CollisionObstacle):
             base_position,
             base_orientation
         )
+
+        return self._bullet_id
 
     def update_bullet_position(self, pybullet, **kwargs):
         if "t" not in kwargs:
