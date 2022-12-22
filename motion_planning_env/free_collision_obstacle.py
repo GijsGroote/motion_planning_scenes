@@ -115,9 +115,6 @@ class FreeCollisionObstacle(CollisionObstacle):
     def position(self):
         return self._config.position
 
-    def ghost_visual_shape(self):
-        return self.ghost_visual_shape
-
     def dimension(self):
         return len(self.position())
 
