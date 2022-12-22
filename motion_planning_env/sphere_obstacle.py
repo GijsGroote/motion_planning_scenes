@@ -123,9 +123,17 @@ class SphereObstacle(FreeCollisionObstacle):
             pybullet.GEOM_MESH,
             fileName="sphere.obj",
             rgbaColor=self.color(),
-            specularColor=[1.0, 0.5, 0.5],
             meshScale=[self.radius(), self.radius(), self.radius()],
         )
+
+        # if the obstacle requires a target ghost position
+        self.ghost_visual_shape = pybullet.createVisualShape(
+            pybullet.GEOM_MESH,
+            fileName="sphere.obj",
+            rgbaColor=[self.color()[0], self.color()[1], self.color()[2], 0.5],
+            meshScale=[self.radius(), self.radius(), self.radius()],
+        )
+
         if self.dimension() == 2:
             base_position = self.position() + [0.0]
         elif self.dimension() == 3:

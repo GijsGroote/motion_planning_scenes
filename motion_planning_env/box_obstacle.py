@@ -68,6 +68,14 @@ class BoxObstacle(FreeCollisionObstacle):
             meshScale=[self.length()/2, self.width()/2, self.height()/2]
         )
 
+        # if the obstacle requires a target ghost position
+        self.ghost_visual_shape = pybullet.createVisualShape(
+            pybullet.GEOM_MESH,
+            fileName="box.obj",
+            rgbaColor=[self.color()[0], self.color()[1], self.color()[2], 0.5],
+            meshScale=[self.length()/2, self.width()/2, self.height()/2]
+        )
+
         if self.dimension() == 3:
             base_position = self.position()
         else:

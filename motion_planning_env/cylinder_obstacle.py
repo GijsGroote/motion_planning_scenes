@@ -70,6 +70,14 @@ class CylinderObstacle(FreeCollisionObstacle):
             meshScale=[self.radius(), self.radius(), self.height()/2]
         )
 
+        # if the obstacle requires a target ghost position
+        self.ghost_visual_shape = pybullet.createVisualShape(
+            pybullet.GEOM_MESH,
+            fileName="cylinder.obj",
+            rgbaColor=[self.color()[0], self.color()[1], self.color()[2], 0.5],
+            meshScale=[self.radius(), self.radius(), self.height()/2]
+        )
+
         if self.dimension() == 3:
             base_position = self.position()
         else:
